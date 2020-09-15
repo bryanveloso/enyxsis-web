@@ -41,6 +41,19 @@ export default function Patcher() {
 
   return (
     <Flex direction="column" overflow="hidden" sx={{ w: 1024, h: 576 }}>
+      <Box sx={{ 
+        backgroundImage: 'url(/patcher/knight.png)',
+        backgroundSize: 600,
+        backgroundPositionX: 630,
+        backgroundPositionY: -50,
+        backgroundRepeat: 'no-repeat',
+        position: 'absolute', 
+        top: 0, 
+        left: 0,
+        w: 1024, 
+        h: 576,
+        zIndex: '1' 
+      }} />
       <Head>
         <script type="text/javascript" src="/patcher/rpc.js"></script>
       </Head>
