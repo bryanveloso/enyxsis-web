@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Button, Flex, Box, ButtonGroup, Progress, Text, IconButton, Icon, HStack } from '@chakra-ui/core'
+import Head from 'next/head';
+import { useState } from 'react'
+import { Button, Flex, Box, ButtonGroup, Progress, Text, IconButton, Icon, HStack, useToast } from '@chakra-ui/core'
+import useEventListener from '@use-it/event-listener'
 
 import Cog from '@/assets/svg/cog.svg'
 import EnyxsisLogo from '@/assets/svg/logo-enyxsis.svg'
@@ -7,43 +9,41 @@ import RagnarokLogo from '@/assets/svg/logo-ragnarok.svg'
 
 export default function Patcher() {
   const [isReady, setIsReady] = useState(false)
-  const [isDownloading, setIsDownloading] = useState(false)
-  const [isInstalling, setIsInstalling] = useState(false)
-
   const [hasError, setHasError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-
   const [downloaded, setDownloaded] = useState(0)
   const [installed, setInstalled] = useState(0)
   const [total, setTotal] = useState(0)
 
-  useEffect(() => {
-    window.patchingStatusReady = () => setIsReady(true)
-  }, [isReady])
-  
-  useEffect(() => {
-    window.patchingStatusDownloading = (nbDownloaded, nbTotal) => { 
-      setDownloaded(nbDownloaded)
-      setTotal(nbTotal)
-    }
-  }, [downloaded, total])
-  
-  useEffect(() => {
-    window.patchingStatusInstalling = (nbInstalled, nbTotal) => { 
-      setInstalled(nbInstalled)
-      setTotal(nbTotal)
-    }
-  }, [installed, total])
-  
-  useEffect(() => {
-    window.patchingStatusError = (errorMsg) => {
-      setHasError(true)
-      setErrorMessage(errorMsg)
-    }
-  }, [])
+  useEventListener('statusReady', () => {
+    setIsReady(true)
+  })
+
+  useEventListener('statusDownloading', ({ detail }: CustomEvent) => {
+    setDownloaded(detail.toDownload)
+    setTotal(detail.total)
+  })
+
+  useEventListener('statusInstalling', ({ detail }: CustomEvent) => {
+    setInstalled(detail.toInstall)
+  })
+
+  const toast = useToast()
+  useEventListener('statusError', ({ detail }: CustomEvent) => {
+    setHasError(true)
+    toast({
+      title: 'Error.',
+      description: detail.error,
+      status: 'error',
+      isClosable: true,
+      position: 'bottom-left'
+    })
+  })
 
   return (
     <Flex direction="column" overflow="hidden" sx={{ w: 1024, h: 576 }}>
+      <Head>
+        <script type="text/javascript" src="/patcher/rpc.js"></script>
+      </Head>
       <Box sx={{ flex: '1 1 auto', pt: 8, px: 6 }}>
         <Flex>
           <Flex>
@@ -56,17 +56,17 @@ export default function Patcher() {
 
       <ButtonGroup sx={{ p: 6 }}>
         <Button size="lg" colorScheme="teal" isLoading={!isReady} onClick={() => window.external.invoke('play')}>Start Game</Button>
-        <IconButton size="lg" aria-label="Setup" variant="ghost" onClick={() => window.external.invoke('setup')} icon={<Icon as={Cog} />}/>
+        <IconButton size="lg" aria-label="Setup" variant="ghost" onClick={() => window.external.invoke('setup')} icon={<Icon as={Cog} />} />
       </ButtonGroup>
 
       <Flex sx={{ borderTop: '1px solid', borderColor: 'gray.800', bg: 'black', p: 6 }}>
-        <HStack spacing={6} sx={{ flex: '1 1 auto'}}>
+        <HStack spacing={6} sx={{ flex: '1 1 auto' }}>
+          <Text fontSize="xs" sx={{ color: 'gray.700' }}>v0.5.20200914</Text>
           <Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Downloaded: <strong>{downloaded} of {total}</strong></Text>
           <Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Installed: <strong>{installed} of {total}</strong></Text>
-          <Text fontSize="xs" sx={{ color: 'gray.700' }}>v0.5.20200914</Text>
         </HStack>
       </Flex>
-      <Progress size="xs" colorScheme="blue" hasStripe value={100} sx={{ bg: 'black' }} />
+      <Progress size="xs" colorScheme="blue" hasStripe value={0} sx={{ bg: 'black' }} />
     </Flex>
   )
 }
