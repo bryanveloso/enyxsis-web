@@ -19,11 +19,13 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@/assets/*": ["assets/*"],
       "@/components/*": ["components/*"],
       "@/lib/*": ["lib/*"]
     }    
   },
   "include": [
+    "custom.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"

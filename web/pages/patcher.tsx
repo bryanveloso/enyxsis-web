@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Button, Flex, Box, ButtonGroup, Progress, Text } from '@chakra-ui/core'
+import { Button, Flex, Box, ButtonGroup, Progress, Text, IconButton, Icon } from '@chakra-ui/core'
+
+import EnyxsisLogo from '../assets/svg/logo-enyxsis.svg'
+import RagnarokLogo from '../assets/svg/logo-ragnarok.svg'
+import Cog from '@/assets/svg/cog.svg'
 
 export default function Patcher() {
   const [isReady, setIsReady] = useState(false)
@@ -39,22 +43,29 @@ export default function Patcher() {
   }, [])
 
   return (
-    <Flex direction="column" sx={{ width: 780, height: 580 }}>
-      <Box sx={{ flex: '1 1 auto' }}>
-        Enyxsis
+    <Flex direction="column" sx={{ bg: 'gray.900', color: 'gray.50', w: 1024, h: 576 }}>
+      <Box sx={{ flex: '1 1 auto', pt: 8, px: 6 }}>
+        <Flex>
+          <Flex>
+            <EnyxsisLogo style={{ height: 36 }} />
+            <RagnarokLogo style={{ paddingLeft: 10, height: 36 }} />
+          </Flex>
+          <Box></Box>
+        </Flex>
       </Box>
-      <Progress value={80} />
-      <Flex sx={{ padding: 4 }}>
-        <Box sx={{ flex: '1 1 auto'}}>
-          <Text>Downloaded Patches: <strong>{downloaded}/{total}</strong></Text>
-          <Text>Installed Patches: <strong>{installed}/{total}</strong></Text>
-        </Box>
-        <ButtonGroup>
-          <Button onClick={() => window.external.invoke('play')} isDisabled={!isReady}>Play</Button>
-          <Button onClick={() => window.external.invoke('setup')}>Setup</Button>
-          <Button onClick={() => window.external.invoke('exit')}>Exit</Button>
-        </ButtonGroup>
+
+      <ButtonGroup sx={{ p: 6 }}>
+        <Button size="lg" colorScheme="green" isDisabled={!isReady} onClick={() => window.external.invoke('play')}>Start Game</Button>
+        <IconButton aria-label="Setup" variant="link" size="lg" onClick={() => window.external.invoke('setup')} icon={<Icon as={Cog} />}/>
+      </ButtonGroup>
+
+      <Flex sx={{ bg: 'black', p: 6 }}>
+        <Flex sx={{ flex: '1 1 auto'}}>
+          <Text fontSize="xs" sx={{ color: 'gray.500', mr: 6 }}>Patches Downloaded: <strong>{downloaded} of {total}</strong></Text>
+          <Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Installed: <strong>{installed} of {total}</strong></Text>
+        </Flex>
       </Flex>
+      <Progress size="xs" colorScheme="cyan" value={80} />
     </Flex>
   )
 }
