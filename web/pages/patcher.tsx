@@ -47,6 +47,7 @@ export default function Patcher() {
         backgroundPositionX: 630,
         backgroundPositionY: -50,
         backgroundRepeat: 'no-repeat',
+        pointerEvents: 'none',
         position: 'absolute', 
         top: 0, 
         left: 0,
