@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Button, Flex, Box, ButtonGroup, Progress, Text, IconButton, Icon } from '@chakra-ui/core'
+import { Button, Flex, Box, ButtonGroup, Progress, Text, IconButton, Icon, HStack } from '@chakra-ui/core'
 
-import EnyxsisLogo from '../assets/svg/logo-enyxsis.svg'
-import RagnarokLogo from '../assets/svg/logo-ragnarok.svg'
 import Cog from '@/assets/svg/cog.svg'
+import EnyxsisLogo from '@/assets/svg/logo-enyxsis.svg'
+import RagnarokLogo from '@/assets/svg/logo-ragnarok.svg'
 
 export default function Patcher() {
   const [isReady, setIsReady] = useState(false)
@@ -43,7 +43,7 @@ export default function Patcher() {
   }, [])
 
   return (
-    <Flex direction="column" sx={{ bg: 'gray.900', color: 'gray.50', w: 1024, h: 576 }}>
+    <Flex direction="column" overflow="hidden" sx={{ w: 1024, h: 576 }}>
       <Box sx={{ flex: '1 1 auto', pt: 8, px: 6 }}>
         <Flex>
           <Flex>
@@ -55,17 +55,18 @@ export default function Patcher() {
       </Box>
 
       <ButtonGroup sx={{ p: 6 }}>
-        <Button size="lg" colorScheme="green" isDisabled={!isReady} onClick={() => window.external.invoke('play')}>Start Game</Button>
-        <IconButton aria-label="Setup" variant="link" size="lg" onClick={() => window.external.invoke('setup')} icon={<Icon as={Cog} />}/>
+        <Button size="lg" colorScheme="teal" isLoading={!isReady} onClick={() => window.external.invoke('play')}>Start Game</Button>
+        <IconButton size="lg" aria-label="Setup" variant="ghost" onClick={() => window.external.invoke('setup')} icon={<Icon as={Cog} />}/>
       </ButtonGroup>
 
-      <Flex sx={{ bg: 'black', p: 6 }}>
-        <Flex sx={{ flex: '1 1 auto'}}>
-          <Text fontSize="xs" sx={{ color: 'gray.500', mr: 6 }}>Patches Downloaded: <strong>{downloaded} of {total}</strong></Text>
+      <Flex sx={{ borderTop: '1px solid', borderColor: 'gray.800', bg: 'black', p: 6 }}>
+        <HStack spacing={6} sx={{ flex: '1 1 auto'}}>
+          <Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Downloaded: <strong>{downloaded} of {total}</strong></Text>
           <Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Installed: <strong>{installed} of {total}</strong></Text>
-        </Flex>
+          <Text fontSize="xs" sx={{ color: 'gray.700' }}>v0.5.20200914</Text>
+        </HStack>
       </Flex>
-      <Progress size="xs" colorScheme="cyan" value={80} />
+      <Progress size="xs" colorScheme="blue" hasStripe value={100} sx={{ bg: 'black' }} />
     </Flex>
   )
 }
