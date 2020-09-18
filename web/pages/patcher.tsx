@@ -1,6 +1,17 @@
-import Head from 'next/head';
+import Head from 'next/head'
 import { useState } from 'react'
-import { Button, Flex, Box, ButtonGroup, Progress, Text, IconButton, Icon, HStack, useToast } from '@chakra-ui/core'
+import {
+  Button,
+  Flex,
+  Box,
+  ButtonGroup,
+  Progress,
+  Text,
+  IconButton,
+  Icon,
+  HStack,
+  useToast,
+} from '@chakra-ui/core'
 import useEventListener from '@use-it/event-listener'
 
 import { ImageOverlay, LogoStatus } from '@/components/patcher'
@@ -35,7 +46,7 @@ export default function Patcher() {
       description: detail.error,
       status: 'error',
       isClosable: true,
-      position: 'bottom-left'
+      position: 'bottom-left',
     })
   })
 
@@ -51,14 +62,43 @@ export default function Patcher() {
         </Flex>
       </Box>
       <ButtonGroup sx={{ p: 6 }}>
-        <Button size="lg" colorScheme="teal" isLoading={!isReady} onClick={() => window.external.invoke('play')}>Start Game</Button>
-        <IconButton size="lg" aria-label="Setup" variant="ghost" onClick={() => window.external.invoke('setup')} icon={<Icon as={Cog} />} />
+        <Button
+          size="lg"
+          colorScheme="teal"
+          isLoading={!isReady}
+          onClick={() => window.external.invoke('play')}
+        >
+          Start Game
+        </Button>
+        <IconButton
+          size="lg"
+          aria-label="Setup"
+          variant="ghost"
+          onClick={() => window.external.invoke('setup')}
+          icon={<Icon as={Cog} />}
+        />
       </ButtonGroup>
       <Flex sx={{ borderTop: '1px solid', borderColor: 'gray.800', bg: 'black', p: 6 }}>
         <HStack spacing={6} sx={{ flex: '1 1 auto' }}>
-          <Text fontSize="xs" sx={{ color: 'gray.700' }}>v0.5.20200914</Text>
-          {downloaded > 0 && (<Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Downloaded: <strong>{downloaded} of {total}</strong></Text>)}
-          {installed > 0 && (<Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Installed: <strong>{installed} of {total}</strong></Text>)}
+          <Text fontSize="xs" sx={{ color: 'gray.700' }}>
+            v0.5.20200914
+          </Text>
+          {downloaded > 0 && (
+            <Text fontSize="xs" sx={{ color: 'gray.500' }}>
+              Patches Downloaded:{' '}
+              <strong>
+                {downloaded} of {total}
+              </strong>
+            </Text>
+          )}
+          {installed > 0 && (
+            <Text fontSize="xs" sx={{ color: 'gray.500' }}>
+              Patches Installed:{' '}
+              <strong>
+                {installed} of {total}
+              </strong>
+            </Text>
+          )}
         </HStack>
       </Flex>
       <Progress size="xs" colorScheme="blue" hasStripe value={0} sx={{ bg: 'black' }} />

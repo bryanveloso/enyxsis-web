@@ -1,10 +1,8 @@
-function patchingStatusReady() { 
-  window.dispatchEvent(
-    new CustomEvent('statusReady')
-  )
+function patchingStatusReady() {
+  window.dispatchEvent(new CustomEvent('statusReady'))
 }
 
-function patchingStatusDownloading(nbDownloaded, nbTotal) { 
+function patchingStatusDownloading(nbDownloaded, nbTotal) {
   window.dispatchEvent(
     new CustomEvent('statusDownloading', {
       detail: { toDownload: nbDownloaded, total: nbTotal },
@@ -20,7 +18,7 @@ function patchingStatusInstalling(nbInstalled, nbTotal) {
   )
 }
 
-function patchingStatusError(errorMsg) { 
+function patchingStatusError(errorMsg) {
   window.dispatchEvent(
     new CustomEvent('statusError', {
       detail: { error: errorMsg },

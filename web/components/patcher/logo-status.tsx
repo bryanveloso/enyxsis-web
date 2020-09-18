@@ -13,7 +13,7 @@ export const LogoStatus = () => {
   useEffect(() => {
     if (!loading && !error) {
       const { status } = data
-      const result = Object.values(status).every(item => item === true)
+      const result = Object.values(status).every((item) => item === true)
       setColor(result ? theme.colors.green['400'] : theme.colors.red['400'])
     }
   }, [data, loading, error])
