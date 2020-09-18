@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Button, Flex, Box, ButtonGroup, Progress, Text, IconButton, Icon, HStack, useToast } from '@chakra-ui/core'
 import useEventListener from '@use-it/event-listener'
 
+import { ImageOverlay, LogoStatus } from '@/components/patcher'
+
 import Cog from '@/assets/svg/cog.svg'
-import EnyxsisLogo from '@/assets/svg/logo-enyxsis.svg'
-import RagnarokLogo from '@/assets/svg/logo-ragnarok.svg'
 
 export default function Patcher() {
   const [isReady, setIsReady] = useState(false)
@@ -40,44 +40,25 @@ export default function Patcher() {
   })
 
   return (
-    <Flex direction="column" overflow="hidden" sx={{ w: 1024, h: 576 }}>
-      <Box sx={{ 
-        backgroundImage: 'url(/patcher/knight.png)',
-        backgroundSize: 600,
-        backgroundPositionX: 630,
-        backgroundPositionY: -50,
-        backgroundRepeat: 'no-repeat',
-        pointerEvents: 'none',
-        position: 'absolute', 
-        top: 0, 
-        left: 0,
-        w: 1024, 
-        h: 576,
-        zIndex: '1' 
-      }} />
+    <Flex direction="column" overflow="hidden" sx={{ w: 1024, h: 576, userSelect: 'none' }}>
       <Head>
         <script type="text/javascript" src="/patcher/rpc.js"></script>
       </Head>
+      <ImageOverlay />
       <Box sx={{ flex: '1 1 auto', pt: 8, px: 6 }}>
         <Flex>
-          <Flex>
-            <EnyxsisLogo style={{ height: 36 }} />
-            <RagnarokLogo style={{ paddingLeft: 10, height: 36 }} />
-          </Flex>
-          <Box></Box>
+          <LogoStatus />
         </Flex>
       </Box>
-
       <ButtonGroup sx={{ p: 6 }}>
         <Button size="lg" colorScheme="teal" isLoading={!isReady} onClick={() => window.external.invoke('play')}>Start Game</Button>
         <IconButton size="lg" aria-label="Setup" variant="ghost" onClick={() => window.external.invoke('setup')} icon={<Icon as={Cog} />} />
       </ButtonGroup>
-
       <Flex sx={{ borderTop: '1px solid', borderColor: 'gray.800', bg: 'black', p: 6 }}>
         <HStack spacing={6} sx={{ flex: '1 1 auto' }}>
           <Text fontSize="xs" sx={{ color: 'gray.700' }}>v0.5.20200914</Text>
-          <Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Downloaded: <strong>{downloaded} of {total}</strong></Text>
-          <Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Installed: <strong>{installed} of {total}</strong></Text>
+          {downloaded > 0 && (<Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Downloaded: <strong>{downloaded} of {total}</strong></Text>)}
+          {installed > 0 && (<Text fontSize="xs" sx={{ color: 'gray.500' }}>Patches Installed: <strong>{installed} of {total}</strong></Text>)}
         </HStack>
       </Flex>
       <Progress size="xs" colorScheme="blue" hasStripe value={0} sx={{ bg: 'black' }} />
