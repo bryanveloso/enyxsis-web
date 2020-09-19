@@ -1,0 +1,18 @@
+query Items {
+  items {
+    id
+    name
+    weight
+  }
+}
+
+query Item($id: Float!) {
+  item(id: $id) {
+    id
+    type
+    name
+    priceBuy
+    priceSell
+    weight
+  }
+}

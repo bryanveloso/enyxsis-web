@@ -1,0 +1,9 @@
+schema:
+    - https://api.enyxsis.com/graphql
+documents: '**/*.graphql'
+plugins:
+  - typescript
+  - typescript-operations
+  - typescript-react-apollo
+config:
+  reactApolloVersion: 3

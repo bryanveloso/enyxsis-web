@@ -11,7 +11,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({ uri: 'http://64.225.91.36:4000' }),
+    link: new HttpLink({ uri: 'https://api.enyxsis.com/graphql' }),
     cache: new InMemoryCache(),
   })
 }
