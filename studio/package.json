@@ -23,6 +23,7 @@
     "@sanity/default-login": "^1.150.1",
     "@sanity/desk-tool": "^1.150.7",
     "@sanity/vision": "^1.150.6",
+    "date-fns": "^2.16.1",
     "prop-types": "^15.6",
     "react": "^16.2",
     "react-dom": "^16.2",
