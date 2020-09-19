@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { FunctionComponent } from 'react'
 
 import { initializeApollo } from '@/lib/apollo'
-import { ItemsDocument } from '@/lib/items.graphql'
+import { ItemDocument, ItemsDocument } from '@/lib/items.graphql'
 import { ItemDetail } from '@/components/item'
 
 const ItemPage: FunctionComponent = () => {
@@ -15,28 +15,25 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const {
     data: { items },
     error,
-  } = await apolloClient.query({
-    query: ItemsDocument,
-  })
+  } = await apolloClient.query({ query: ItemsDocument })
 
   if (error) {
-    console.log('Error while getStaticPaths, ', error)
+    console.error('Error in getStaticPaths: ', error)
   }
 
-  return {
-    paths: items.map(({ id }) => ({
-      params: { id },
-    })),
-    fallback: true,
-  }
+  return { paths: items.map(({ id }) => ({ params: { id } })), fallback: true }
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const apolloClient = initializeApollo()
-  const { params } = context
-  const { id } = params
+  const {
+    params: { id },
+  } = context
 
-  await apolloClient.query({ query: ItemsDocument })
+  console.log(typeof id)
+
+  const allItemVars = { id: Number(id) }
+  await apolloClient.query({ query: ItemDocument, variables: allItemVars })
 
   return {
     props: {
